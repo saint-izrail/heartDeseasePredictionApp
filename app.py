@@ -1,15 +1,22 @@
-from flask import Flask, request, render_template
-import joblib
+from flask import Flask, render_template, request
 import numpy as np
+import joblib
 
 app = Flask(__name__)
 
-# Load model and scaler
-model = joblib.load('best_model.joblib')
+# Load the models and scaler
 scaler = joblib.load('scaler.joblib')
+logregmodel = joblib.load('logregmodel.joblib')
+knnmodel = joblib.load('knnmodel.joblib')
 
-# Dictionary informasi untuk setiap parameter
-PARAMETER_INFO = {
+# Dictionary untuk menyimpan akurasi model
+model_accuracy = {
+    'logregmodel': 0.9457,
+    'knnmodel': 0.9239
+}
+
+# Dictionary untuk parameter information
+parameters = {
     'Age': {
         'name': 'Age (Usia)',
         'description': 'Usia pasien dalam tahun',
@@ -94,40 +101,51 @@ def home():
 
 @app.route('/info')
 def info():
-    return render_template('info.html', parameters=PARAMETER_INFO)
+    return render_template('info.html', parameters=parameters)
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        # Get values from form in the correct order
+    if request.method == 'POST':
+        # Get values from the form
         features = [
-            'Age', 'Sex', 'ChestPainType', 'RestingBP', 'Cholesterol',
-            'FastingBS', 'RestingECG', 'MaxHR', 'ExerciseAngina', 'Oldpeak', 'ST_Slope'
+            float(request.form['Age']),
+            float(request.form['Sex']),
+            float(request.form['ChestPainType']),
+            float(request.form['RestingBP']),
+            float(request.form['Cholesterol']),
+            float(request.form['FastingBS']),
+            float(request.form['RestingECG']),
+            float(request.form['MaxHR']),
+            float(request.form['ExerciseAngina']),
+            float(request.form['Oldpeak']),
+            float(request.form['ST_Slope'])
         ]
         
-        # Collect all input values
-        feature_values = []
-        for feature in features:
-            value = float(request.form.get(feature))
-            feature_values.append(value)
-
         # Convert to numpy array and reshape
-        features_array = np.array(feature_values).reshape(1, -1)
+        final_features = np.array(features).reshape(1, -1)
         
-        # Scale features using the loaded scaler
-        features_scaled = scaler.transform(features_array)
+        # Scale the features
+        final_features = scaler.transform(final_features)
+        
+        # Get selected model
+        selected_model = request.form['model']
+        
+        # Make prediction based on selected model
+        if selected_model == 'knnmodel':
+            prediction = knnmodel.predict(final_features)
+            accuracy = model_accuracy['knnmodel']
+            model_name = "K-Nearest Neighbors"
+        else:
+            prediction = logregmodel.predict(final_features)
+            accuracy = model_accuracy['logregmodel']
+            model_name = "Logistic Regression"
 
-        # Make prediction
-        prediction = model.predict(features_scaled)[0]
+        output = "High Risk" if prediction[0] == 1 else "Low Risk"
         
-        # Prepare output
-        result = 'Heart Disease Detected' if prediction == 1 else 'No Heart Disease Detected'
-        
-        return render_template('result.html', prediction_text=result)
-                             
-    except Exception as e:
         return render_template('result.html', 
-                             prediction_text="Error: Please check your inputs and try again")
+                             prediction=output, 
+                             accuracy=accuracy,
+                             model_name=model_name)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

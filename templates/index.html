@@ -135,6 +135,12 @@
             visibility: visible;
             opacity: 1;
         }
+        .model-select {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -147,8 +153,18 @@
         <a href="/info" class="nav-button">View Parameter Information</a>
     </div>
 
-    <h1>Heart Disease Predictor</h1>
     <form method="POST" action="/predict" onsubmit="return validateForm()">
+        <div class="model-select">
+            <div class="form-group">
+                <label for="model">Select Prediction Model:</label>
+                <select name="model" id="model" required>
+                    <option value="">Select Model</option>
+                    <option value="logregmodel">Logistic Regression (Accuracy: 94.57%)</option>
+                    <option value="knnmodel">K-Nearest Neighbors (Accuracy: 92.39%)</option>
+                </select>
+            </div>
+        </div>
+
         <div class="form-row">
             <div class="form-group">
                 <label for="Age">Age:</label>

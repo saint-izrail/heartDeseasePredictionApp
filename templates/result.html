@@ -14,62 +14,77 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, #3498db, #2c3e50);
-            border-radius: 10px;
-            color: white;
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        .header p {
-            margin: 10px 0 0;
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-        .result {
+        .result-container {
             background-color: #fff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             text-align: center;
+            margin-top: 50px;
         }
-        .prediction {
-            font-size: 24px;
-            font-weight: bold;
+        .result-header {
+            color: #2c3e50;
             margin-bottom: 20px;
         }
-        .back-link {
-            display: inline-block;
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .prediction {
+            font-size: 2em;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
         }
-        .back-link:hover {
+        .high-risk {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        .low-risk {
+            background-color: #51cf66;
+            color: white;
+        }
+        .model-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .accuracy {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-top: 10px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-top: 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .back-button:hover {
             background-color: #2980b9;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Prediction Result</h1>
-        <p>Your heart disease prediction result</p>
-    </div>
-    <div class="result">
-        <p class="prediction">{{ prediction_text }}</p>
-        <a href="/" class="back-link">Go back</a>
+    <div class="result-container">
+        <h2 class="result-header">Heart Disease Prediction Result</h2>
+        <div class="model-info">
+            <h3>Model Used: {{ model_name }}</h3>
+            <p class="accuracy">Model Accuracy: {{ "%.2f"|format(accuracy * 100) }}%</p>
+        </div>
+        <div class="prediction {% if prediction == 'High Risk' %}high-risk{% else %}low-risk{% endif %}">
+            {{ prediction }}
+        </div>
+        <p>
+            {% if prediction == 'High Risk' %}
+            Based on the provided information, you may be at high risk for heart disease. Please consult with a healthcare professional.
+            {% else %}
+            Based on the provided information, you appear to be at low risk for heart disease. However, maintain a healthy lifestyle and regular check-ups.
+            {% endif %}
+        </p>
+        <a href="/" class="back-button">Make Another Prediction</a>
     </div>
 </body>
 </html>
