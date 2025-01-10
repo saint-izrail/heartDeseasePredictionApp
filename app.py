@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import numpy as np
 import joblib
-
+import os  
 app = Flask(__name__)
 
 # Load the models and scaler
@@ -148,4 +148,5 @@ def predict():
                              model_name=model_name)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port, debug=True)  
