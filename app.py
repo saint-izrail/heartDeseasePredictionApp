@@ -5,9 +5,9 @@ import os
 app = Flask(__name__)
 
 # Load the models and scaler
-scaler = joblib.load('scaler.joblib')
-logregmodel = joblib.load('logregmodel.joblib')
-knnmodel = joblib.load('knnmodel.joblib')
+scaler = joblib.load('models/scaler.joblib')
+logregmodel = joblib.load('models/logregmodel.joblib')
+knnmodel = joblib.load('models/knnmodel.joblib')
 
 # Dictionary untuk menyimpan akurasi model
 model_accuracy = {
