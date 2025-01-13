@@ -79,7 +79,7 @@ parameters = {
         'reference': 'American Heart Association. (2023). Angina (Chest Pain). https://www.heart.org/en/health-topics/heart-attack/angina-chest-pain'
     },
     'Oldpeak': {
-        'name': 'ST Depression (Depresi ST)',
+        'name': 'Oldpeak / ST Depression (Depresi ST)',
         'description': 'Depresi segmen ST yang diukur dalam tes beban',
         'measurement': 'Perlu pemeriksaan EKG beban di fasilitas kesehatan',
         'reference': 'Mayo Clinic. (2023). Stress Test. https://www.mayoclinic.org/tests-procedures/stress-test/about/pac-20385234'
