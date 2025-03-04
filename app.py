@@ -140,7 +140,7 @@ def predict():
             accuracy = model_accuracy['logregmodel']
             model_name = "Logistic Regression"
 
-        output = "High Risk" if prediction[0] == 1 else "Low Risk"
+        output = "HEART DISEASE" if prediction[0] == 1 else "NO HEART DISEASE"
         
         return render_template('result.html', 
                              prediction=output, 
