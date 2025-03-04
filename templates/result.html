@@ -74,7 +74,7 @@
             <h3>Model Used: {{ model_name }}</h3>
             <p class="accuracy">Model Accuracy: {{ "%.2f"|format(accuracy * 100) }}%</p>
         </div>
-        <div class="prediction {% if prediction == 'HEART DISEASE' %}high-risk{% else %}low-risk{% endif %}">
+        <div class="prediction {% if prediction == 'HEART DISEASE' %}HEART DISEASE{% else %}NO HEART DISEASE{% endif %}">
             {{ prediction }}
         </div>
         <p>
